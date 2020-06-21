@@ -21,6 +21,7 @@ describe('fillGrid', () => {
         expect(grid[row][col]).toBeGreaterThanOrEqual(1)
         expect(grid[row][col]).toBeLessThanOrEqual(9)
       }
+    console.log(grid, 'see final grid')
   })
 
   it('fills a valid partially filled grid', () => {
@@ -41,5 +42,6 @@ describe('fillGrid', () => {
         expect(grid[row][col]).toBeGreaterThanOrEqual(1)
         expect(grid[row][col]).toBeLessThanOrEqual(9)
       }
+    console.log(grid, 'see final grid')
   })
 })
