@@ -4,8 +4,12 @@ import produce from 'immer'
 import { compareArrays, copyGrid, createFullGrid, removeNumbers } from 'utils'
 
 import * as types from './types'
+import { IReducer } from './interfaces'
 
-const gridReducer = produce((draft, action: AnyAction) => {
+const initialState: IReducer = {}
+
+const gridReducer = (state = initialState, action: AnyAction) =>
+  produce(state, draft => {
   switch (action.type) {
     case types.CREATE_GRID:
       const solvedGrid = createFullGrid();
@@ -15,15 +19,17 @@ const gridReducer = produce((draft, action: AnyAction) => {
       draft.solvedGrid = solvedGrid
       draft.workingGrid = copyGrid(challengeGrid)
     case types.FILL_BLOCK:
-      if (draft.workingGrid && draft.solvedGrid) {
-        if (draft.solvedGrid[action.coords[0]][action.coords[1]]
+      if (state.workingGrid && state.solvedGrid) {
+        if (state.solvedGrid[action.coords[0]][action.coords[1]]
         !== action.value
         ) {
-          alert('incorrect state')
+          alert('incorrect option')
         }
-        draft.workingGrid[action.coords[0]][action.coords[1]] = action.value;
-        if (compareArrays(draft.workingGrid, draft.solvedGrid)) {
+        if (compareArrays(state.workingGrid, state.solvedGrid)) {
           alert('completed!')
+        }
+        if (draft.workingGrid) {
+          draft.workingGrid[action.coords[0]][action.coords[1]] = action.value;
         }
       }
     case types.SELECT_BLOCK:
