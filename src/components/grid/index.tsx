@@ -6,21 +6,23 @@ import { createGrid, fillBlock, IReducer, selectBlock } from 'reducers'
 
 import Block from './block'
 import { Container, Row } from './styles'
-import { BLOCK_COORD, INDEX, N, NUMBERS } from 'typings'
+import { BLOCK_COORD, GRID, INDEX, N, NUMBERS } from 'typings'
 
 interface IState {
   selectedBlock?: BLOCK_COORD
   selectedValue: N
+  solvedGrid?: GRID
 }
 
 const Grid: FC = () => {
   const state = useSelector<IReducer, IState>
   (({ selectedBlock,
-      workingGrid}) => ({
+      workingGrid, solvedGrid}) => ({
     selectedBlock,
     selectedValue:
       workingGrid && selectedBlock
-      ? workingGrid[selectedBlock[0]][selectedBlock[1]] : 0
+      ? workingGrid[selectedBlock[0]][selectedBlock[1]] : 0,
+    solvedGrid
   }))
   const dispatch = useDispatch<Dispatch<AnyAction>>()
   const create = useCallback(() => dispatch(createGrid()), [dispatch])
@@ -92,8 +94,10 @@ const Grid: FC = () => {
   useMouseTrap('up', moveUp)
 
   useEffect(() => {
-    create()
-  }, [create])
+    if (!state.solvedGrid) {
+      create()
+    }
+  }, [create, state.solvedGrid])
   return (
     <Container data-cy="grid-container">
       {Children.toArray(
