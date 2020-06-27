@@ -24,6 +24,7 @@ const gridReducer = (state = initialState, action: AnyAction) =>
         !== action.value
         ) {
           alert('incorrect option')
+          return
         }
         if (compareArrays(state.workingGrid, state.solvedGrid)) {
           alert('completed!')
